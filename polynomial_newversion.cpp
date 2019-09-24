@@ -19,6 +19,13 @@ class Polynomial;
 class Term
 {
 	friend Polynomial;
+	float getCoef() { return coef; }
+	int getExp() { return exp; }
+	friend istream& operator >> (istream& stream, Polynomial& m);
+	friend ostream& operator << (ostream& stream, Polynomial& m);
+
+
+
 private:
 	float coef;
 	int exp;
@@ -84,6 +91,43 @@ void Polynomial::NewTerm(const float theCoeff, const int theExp)
 	}
 	termArray[free].coef = theCoeff;
 	termArray[free++].exp = theExp;
+}
+Polynomial& Polynomial::operator+(const Polynomial& m)
+{
+	Polynomial c;
+	int aPos = start, bPos = start;
+	c.start = free;
+	while ((aPos <= finish) && (bPos <= finish))
+		if ((termArray[aPos].exp == termArray[bPos].exp))
+		{
+			float t = termArray[aPos].coef + termArray[bPos].coef;
+			if (t) c.NewTerm(t, termArray[aPos].exp);
+			aPos++; bPos++;
+		}
+		else if ((termArray[aPos].exp < termArray[bPos].exp))
+		{
+			c.NewTerm(termArray[bPos].coef, termArray[bPos].exp);
+			bPos++;
+		}
+		else
+		{
+			c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
+			aPos++;
+		}
+	for (; aPos <= finish; aPos++)
+		c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
+	for (; bPos <= finish; bPos++)
+		c.NewTerm(termArray[bPos].coef, termArray[bPos].exp);
+	c.finish = free - 1;
+	return c;
+}
+Polynomial& Polynomial::operator*(const Polynomial& m)
+{
+	
+}
+Polynomial& Polynomial::operator=(const Polynomial& m)
+{
+	
 }
 /*
 int Polynomial::GetData() {
@@ -164,14 +208,16 @@ istream& operator>>(istream& stream, Polynomial& m)
 	return stream;
 }
 
-istream& operator<<(istream& stream, Polynomial& m) {
+
+ostream& operator<<(ostream& stream, Polynomial& m)
+{
 	int aPos = m.start;
 	for (; aPos <= m.finish; aPos++) {
-		cout << m.termArray[aPos].coef << "x^" << m.termArray[aPos].exp;
+		stream << m.termArray[aPos].coef << "x^" << m.termArray[aPos].exp;
 		if ((aPos - m.finish) != 0)
-			cout << " + ";
+			stream << " + ";
 	}
-	cout << "\n";
+	stream << "\n";
 	return stream;
 }
 
