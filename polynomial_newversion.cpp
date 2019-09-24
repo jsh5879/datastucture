@@ -1,8 +1,8 @@
 /* polynomial_newversion.cpp - 다항식 Add, multi, sub, eval를 구현*/
 /*
-학번:
-이름:
-Github Id:
+학번: 201524561
+이름: 장석환
+Github Id: jsh5879
 comments로 표시된 함수는 사용하지 않음
 다항식의 >>, <<, +, - , *, eval 코딩하기
 */

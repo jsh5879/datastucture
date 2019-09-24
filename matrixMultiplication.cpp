@@ -1,7 +1,7 @@
 /* matrixMultiplication.cpp - 2차원 행렬을 1차원으로 저장, + 구현
-학번:
-이름:
-Github ID:
+학번: 201524561
+이름: 장석환
+Github ID: jsh5879
 Matrix의 <<, >>, +, -, *의 구현
 operator *()의 구현시에 transpose 결과를 사용
 comments로 표시된 함수는 사용하지 않음
@@ -26,6 +26,9 @@ public:
 	Matrix& operator-(const Matrix& m);
 	Matrix& operator*(const Matrix& m);
 	Matrix& operator=(const Matrix& m);
+	int getRow() { return rows; }
+	int getCol() { return cols; }
+
 private:
 	int rows, cols;
 	//int Term[rows][cols];
@@ -52,8 +55,9 @@ int Matrix::GetData() {
 */
 Matrix Matrix::Transpose() {
 	Matrix b(cols, rows);
-	//...
-	// 학생들이 code 작성
+	for (int r = 0; r < rows; r++)
+		for (int c = 0; c < cols; c++)
+			b.Term[(rows * c) + r] = Term[(cols * r) + c];
 	return b;
 }
 /*
@@ -69,6 +73,7 @@ int Matrix::CompareRowCol(Matrix b) {
 	if (cols != b.rows) return 1;
 	else return 0;
 }
+
 /*
 int Matrix::Display() {
 	int n;
@@ -83,6 +88,65 @@ int Matrix::Display() {
 	return 0;
 }
 */
+
+istream& operator >> (istream& stream, Matrix& m) {
+	int input_value;
+	for (int j = 0; j < m.getRow() * m.getCol(); j++)
+	{
+		stream >> input_value;
+		m.Term[j] = input_value;
+	}
+	return stream;
+}
+
+
+ostream& operator << (ostream& stream, Matrix& m) {
+	int n;
+	n = m.getRow() * m.getCol();
+	for (int i = 0; i < m.getRow(); i++)
+	{
+		stream << endl;
+		for (int j = 0; j < m.getCol(); j++)
+			stream << m.Term[i * m.getCol() + j] << " ";
+	}
+	stream << endl;
+	return stream;
+}
+
+Matrix& Matrix::operator+(const Matrix& m)
+{
+	Matrix m3(rows, cols);
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			m3.Term[i * cols + j] = Term[i * cols + j] + m.Term[i * cols + j];
+		}
+	}
+	return m3;
+}
+
+Matrix& Matrix::operator-(const Matrix& m)
+{
+	Matrix m3(rows, cols);
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			m3.Term[i * cols + j] = Term[i * cols + j] - m.Term[i * cols + j];
+		}
+	}
+	return m3;
+}
+
+Matrix& Matrix::operator=(const Matrix& m)
+{
+	Matrix m3(rows, cols);
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			Term[i * cols + j] = m.Term[i * cols + j];
+		}
+	}
+	return m3;
+}
+
+
 int main()
 {
 	Matrix a(2, 3);
@@ -102,6 +166,7 @@ int main()
 	cout << "Display second matrix: " << endl;
 	//b.Display();
 	cout << b;
+
 	Matrix d(4, 3);
 	d = b.Transpose();
 	cout << "Transpose() of Matrix b" << endl;
