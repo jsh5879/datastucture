@@ -134,6 +134,33 @@ Matrix& Matrix::operator-(const Matrix& m)
 	}
 	return m3;
 }
+/*
+Matrix Matrix::Multiply(Matrix b) {
+	if (cols != b.rows) cout << "Incompatible matrices" << endl;
+	Matrix bXpose = b.Transpose();
+	Matrix d(rows, b.cols);
+	for (int r = 0; r < rows; r++)
+		for (int c = 0; c < b.cols; c++) {
+			d.Term[(b.cols * r) + c] = 0;
+			for (int i = 0; i < cols; i++)
+				d.Term[(b.cols * r) + c] += Term[(cols * r) + i] * bXpose.Term[(bXpose.cols * c) + i];
+		}
+	return d;
+}*/
+
+Matrix& Matrix::operator*(const Matrix& m)
+{
+	if (cols != m.rows) cout << "Incompatible matrices" << endl;
+	Matrix bXpose = Transpose();
+	Matrix d(rows, m.cols);
+	for (int r = 0; r < rows; r++)
+		for (int c = 0; c < m.cols; c++) {
+			d.Term[(m.cols * r) + c] = 0;
+			for (int i = 0; i < cols; i++)
+				d.Term[(m.cols * r) + c] += Term[(cols * r) + i] * bXpose.Term[(bXpose.cols * c) + i];
+		}
+	return d;
+}
 
 Matrix& Matrix::operator=(const Matrix& m)
 {
