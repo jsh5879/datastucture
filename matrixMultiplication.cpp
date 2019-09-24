@@ -4,21 +4,28 @@
 Github ID:
 Matrix의 <<, >>, +, -, *의 구현
 operator *()의 구현시에 transpose 결과를 사용
+comments로 표시된 함수는 사용하지 않음
 */
 
 #include <iostream>
 using namespace std;
 #include <stdlib.h>
-// 보통 행렬에 대하여add, sub, mult, transpose 구현하는 코딩
+
 class Matrix {
 public:
 	Matrix(int row, int col);
-	int GetData();
+	//int GetData();
 	Matrix Transpose();
-	int Display();
+	//int Display();
 	//Matrix Add(Matrix b);
-	Matrix Multiply(Matrix b);
+	//Matrix Multiply(Matrix b);
 	int CompareRowCol(Matrix b);
+	friend istream & operator >> (istream& stream, Matrix& m);
+	friend ostream & operator << (ostream& stream, Matrix& m);
+	Matrix& operator+(const Matrix& m);
+	Matrix& operator-(const Matrix& m);
+	Matrix& operator*(const Matrix& m);
+	Matrix& operator=(const Matrix& m);
 private:
 	int rows, cols;
 	//int Term[rows][cols];
@@ -29,7 +36,7 @@ Matrix::Matrix(int row, int col) : rows(row), cols(col)
 {
 	Term = new int[rows * cols];
 }
-
+/*
 int Matrix::GetData() {
 	int input_value;
 	cout << "rows = " << rows << "  cols = " << cols << endl;
@@ -42,14 +49,14 @@ int Matrix::GetData() {
 	}
 	return 0;
 }
-
+*/
 Matrix Matrix::Transpose() {
 	Matrix b(cols, rows);
 	//...
 	// 학생들이 code 작성
 	return b;
 }
-
+/*
 Matrix Matrix::Multiply(Matrix b) {
 	if (cols != b.rows) cout << "Incompatible matrices" << endl;
 	Matrix bXpose = b.Transpose();
@@ -57,10 +64,12 @@ Matrix Matrix::Multiply(Matrix b) {
 	// 학생들이 code 작성
 	return d;
 }
+*/
 int Matrix::CompareRowCol(Matrix b) {
 	if (cols != b.rows) return 1;
 	else return 0;
 }
+/*
 int Matrix::Display() {
 	int n;
 	n = rows * cols;
@@ -73,12 +82,12 @@ int Matrix::Display() {
 	cout << endl;
 	return 0;
 }
-
+*/
 int main()
 {
 	Matrix a(2, 3);
 	Matrix b(3, 4);
-	Matrix c(2, 4);
+	Matrix c(2, 4), d(2, 4);
 
 	cout << "Enter first matrix: " << endl;
 	//a.GetData();
@@ -105,12 +114,13 @@ int main()
 		cout << "Error! column of first matrix not equal to row of second.";
 		cout << "Enter rows and columns for first matrix: ";
 	}
-
 	//c = a.Multiply(b);
 	c = a * d;//d는 transpose 행렬
 	cout << "Multiply of Matrix a,b" << endl;
 	//c.Display();
 	cout << c;
+	cin >> d;
+	cout << c + d << c - d;
 	system("pause");
 	return 0;
 }

@@ -1,13 +1,11 @@
 /* polynomial_newversion.cpp - 다항식 Add, multi, sub, eval를 구현*/
-//학번:
-//이름:
-//Github Id:
-//polynomial 2차 버젼
-//2.3 The Polynomial ADT
-//program 2.8 Adding two polynomials
-//program 2.9 Adding a new term
-//ADT 2.3 Polynomial
-// 다항식의 >>, <<, +, - , *, eval 코딩하기
+/*
+학번:
+이름:
+Github Id:
+comments로 표시된 함수는 사용하지 않음
+다항식의 >>, <<, +, - , *, eval 코딩하기
+*/
 
 #include <vector>
 #include <algorithm>
@@ -31,18 +29,23 @@ public:
 	Polynomial();
 	//construct the polynomial p(x) = 0;
 
-	Polynomial Add(Polynomial b);
+	//Polynomial Add(Polynomial b);
 	//return the sum of the polynomials *this and b
-	Polynomial operator+(const Polynomial&, const Polynomial&);
+
 	//Polynomial Mult(Polynomial b);
 	//return the product of the polynomials *this and b
 
-	//float Eval(float f);
+	float Eval(float f);
 	//evaluate the polynomial *this at f and return the result
 
 	void NewTerm(const float theCoeff, const int theExp);
-	int Display();
-	int GetData();
+	//int Display();
+	//int GetData();
+	friend istream & operator >> (istream& stream, Polynomial& m);
+	friend ostream & operator << (ostream& stream, Polynomial& m);
+	Polynomial& operator+(const Polynomial& m);
+	Polynomial& operator*(const Polynomial& m);
+	Polynomial& operator=(const Polynomial& m);
 private:
 	static Term* termArray;
 	static int capacity;
@@ -56,6 +59,7 @@ Polynomial::Polynomial()
 	finish = -1;
 	terms = 0;
 }
+/*
 int Polynomial::Display() {
 	int aPos = start;
 	for (; aPos <= finish; aPos++) {
@@ -66,6 +70,7 @@ int Polynomial::Display() {
 	cout << "\n";
 	return 0;
 }
+*/
 //Program 2.9: Adding a new term
 void Polynomial::NewTerm(const float theCoeff, const int theExp)
 {
@@ -80,7 +85,7 @@ void Polynomial::NewTerm(const float theCoeff, const int theExp)
 	termArray[free].coef = theCoeff;
 	termArray[free++].exp = theExp;
 }
-
+/*
 int Polynomial::GetData() {
 	int i, degree;
 	float coef;
@@ -99,9 +104,9 @@ int Polynomial::GetData() {
 	terms = finish - start + 1;
 	return 0;
 }
-
+*/
 //program 2.8: Adding two polynomials
-//교재 91 페이지 내용과 다른 코드 확인하기
+/*
 Polynomial Polynomial::Add(Polynomial b)
 {
 	Polynomial c;
@@ -124,20 +129,20 @@ Polynomial Polynomial::Add(Polynomial b)
 			c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
 			aPos++;
 		}
-	for (; aPos < finish; aPos++)
+	for (; aPos <= finish; aPos++)
 		c.NewTerm(termArray[aPos].coef, termArray[aPos].exp);
-	for (; bPos < b.finish; bPos++)
+	for (; bPos <= b.finish; bPos++)
 		c.NewTerm(b.termArray[bPos].coef, b.termArray[bPos].exp);
 	c.finish = free - 1;
 	return c;
 }
+*/
 int Polynomial::capacity = 100;
 Term* Polynomial::termArray = new Term[100];
 int Polynomial::free = 0;
 
 int main(void) {
 	int choice;
-
 
 	Polynomial P1, P2, P3, P4;
 	cout << "Instruction:- \nExample:-\nP(x)=5x^3+3x^1\nEnter the Polynomial like\nP(x)=5x^3+0x^2+3x^1+0x^0\n";
@@ -192,15 +197,15 @@ int main(void) {
 			cout << P1;
 			cout << "Polynomial2:";
 			//P2.Display();
-			cout << p2
+			cout << p2;
 				//P3.Multiply(P1, P2);
 				P3 = P1 * P2;
 			cout << "----------------------------------------\n";
 			break;
-			case 4: //P2.Eval(5); 학생 구현 실습 대상
-				cout << P4;
-				P2.Eval(3);
-				break;
+		case 4: //P2.Eval(5); 학생 구현 실습 대상
+			cout << P4;
+			P2.Eval(3);
+			break;
 		case 0:
 			cout << "Good Bye...!!!" << endl;
 			exit(0);
