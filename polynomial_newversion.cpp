@@ -160,8 +160,20 @@ istream& operator>>(istream& stream, Polynomial& m)
 	}
 	m.finish = m.free - 1;
 	m.terms = m.finish - m.start + 1;
+
+	return stream;
 }
 
+istream& operator<<(istream& stream, Polynomial& m) {
+	int aPos = m.start;
+	for (; aPos <= m.finish; aPos++) {
+		cout << m.termArray[aPos].coef << "x^" << m.termArray[aPos].exp;
+		if ((aPos - m.finish) != 0)
+			cout << " + ";
+	}
+	cout << "\n";
+	return stream;
+}
 
 int Polynomial::capacity = 100;
 Term* Polynomial::termArray = new Term[100];
