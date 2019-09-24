@@ -137,6 +137,32 @@ Polynomial Polynomial::Add(Polynomial b)
 	return c;
 }
 */
+
+float Polynomial::Eval(float f) {
+	int Pos;
+	float result = 0.0f;
+	for (Pos = start; Pos <= finish; Pos++)
+		result += (termArray[Pos].coef * pow(f, termArray[Pos].exp));
+	return result;
+}
+
+istream& operator>>(istream& stream, Polynomial& m)
+{
+	int i, degree;
+	float coef;
+	int expo;
+	stream >> degree;
+	m.start = m.free;
+	for (i = degree; i > 0; i--) {
+		stream >> coef;
+		stream >> expo;
+		m.NewTerm(coef, expo);
+	}
+	m.finish = m.free - 1;
+	m.terms = m.finish - m.start + 1;
+}
+
+
 int Polynomial::capacity = 100;
 Term* Polynomial::termArray = new Term[100];
 int Polynomial::free = 0;
@@ -214,4 +240,3 @@ int main(void) {
 	system("pause");
 	return 0;
 }
-
