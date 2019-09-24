@@ -159,7 +159,7 @@ Matrix& Matrix::operator*(const Matrix& m)
 			for (int i = 0; i < cols; i++)
 				d.Term[(m.cols * r) + c] += Term[(cols * r) + i] * bXpose.Term[(bXpose.cols * c) + i];
 		}
-	return d;
+	return m;
 }
 
 Matrix& Matrix::operator=(const Matrix& m)
