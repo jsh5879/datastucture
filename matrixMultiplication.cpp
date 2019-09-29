@@ -115,24 +115,22 @@ ostream& operator << (ostream& stream, Matrix& m) {
 
 Matrix& Matrix::operator+(const Matrix& m)
 {
-	Matrix m3(rows, cols);
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-			m3.Term[i * cols + j] = Term[i * cols + j] + m.Term[i * cols + j];
+			Term[i * cols + j] = Term[i * cols + j] + m.Term[i * cols + j];
 		}
 	}
-	return m3;
+	return *this;
 }
 
 Matrix& Matrix::operator-(const Matrix& m)
 {
-	Matrix m3(rows, cols);
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-			m3.Term[i * cols + j] = Term[i * cols + j] - m.Term[i * cols + j];
+			Term[i * cols + j] = Term[i * cols + j] - m.Term[i * cols + j];
 		}
 	}
-	return m3;
+	return *this;
 }
 /*
 Matrix Matrix::Multiply(Matrix b) {
@@ -148,29 +146,33 @@ Matrix Matrix::Multiply(Matrix b) {
 	return d;
 }*/
 
+
 Matrix& Matrix::operator*(const Matrix& m)
 {
 	if (cols != m.rows) cout << "Incompatible matrices" << endl;
-	Matrix bXpose = Transpose();
-	Matrix d(rows, m.cols);
-	for (int r = 0; r < rows; r++)
+	Matrix m1(rows, m.cols);
+	Matrix m2(m.rows, m.cols);
+	m2 = m;
+	Matrix mTrans(m.cols, m.rows);
+	mTrans = m2.Transpose();
+	for (int r = 0; r < rows; r++) {
 		for (int c = 0; c < m.cols; c++) {
-			d.Term[(m.cols * r) + c] = 0;
+			m1.Term[(m.cols * r) + c] = 0;
 			for (int i = 0; i < cols; i++)
-				d.Term[(m.cols * r) + c] += Term[(cols * r) + i] * bXpose.Term[(bXpose.cols * c) + i];
+				m1.Term[(m.cols * r) + c] += Term[(cols * r) + i] * mTrans.Term[(mTrans.cols * c) + i];
 		}
-	return m;
+	}
+	return m1;
 }
 
 Matrix& Matrix::operator=(const Matrix& m)
 {
-	Matrix m3(rows, cols);
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
 			Term[i * cols + j] = m.Term[i * cols + j];
 		}
 	}
-	return m3;
+	return *this;
 }
 
 
@@ -178,7 +180,7 @@ int main()
 {
 	Matrix a(2, 3);
 	Matrix b(3, 4);
-	Matrix c(2, 4), d(2, 4);
+	Matrix c(2, 4);
 
 	cout << "Enter first matrix: " << endl;
 	//a.GetData();
@@ -207,12 +209,12 @@ int main()
 		cout << "Enter rows and columns for first matrix: ";
 	}
 	//c = a.Multiply(b);
-	c = a * d;//d는 transpose 행렬
+	c = a * b;//d는 transpose 행렬
 	cout << "Multiply of Matrix a,b" << endl;
 	//c.Display();
 	cout << c;
-	cin >> d;
-	cout << c + d << c - d;
+	//cin >> d;
+//	cout << c + d << c - d;
 	system("pause");
 	return 0;
 }
